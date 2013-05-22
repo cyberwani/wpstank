@@ -2,14 +2,12 @@
 // Module dependencies
 var inflection = require('inflection')
     , fs = require('fs')
+    , path = require('path')
     , Files = require('./lib/files');
 
-// Expose the stank
-wxports = module.exports = WPStank;
-
 var Templates = function() {
-    this.postType = fs.readFileSync( './templates/post-type.php', 'UTF-8' );
-    this.taxonomy = fs.readFileSync( './templates/taxonomy.php', 'UTF-8' );
+    this.postType = fs.readFileSync( path.join(__dirname, 'templates', 'post-type.php'), 'UTF-8' );
+    this.taxonomy = fs.readFileSync( path.join(__dirname, 'templates', 'taxonomy.php'), 'UTF-8' );
 };
 
 var WPStank = function() {
@@ -24,3 +22,6 @@ var WPStank = function() {
     this.template = new Templates;
 
 };
+
+// Expose the stank
+exports = module.exports = WPStank;
