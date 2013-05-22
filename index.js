@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var program = require('commander'),
-    stank = require('./src/wpstank.js');
+    stank = require('./src/wpstank');
 
 program
     .version('0.0.0')
