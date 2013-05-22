@@ -9,7 +9,7 @@
         mkdirp = require('mkdirp'),
         pubSub = require('node-pubsub');
 
-    var wpFiles = function() {
+    var Files = function() {
 
         var self = this;
 
@@ -50,7 +50,7 @@
         this.init();
     }
 
-    if( exports === "undefined" ) root.wpFiles = wpFiles;
+    if( exports === "undefined" ) root.Files = Files;
 
-    module.exports = wpFiles;
+    module.exports = Files;
 })( this )
