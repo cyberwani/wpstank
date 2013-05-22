@@ -3,6 +3,7 @@
 var program = require('commander'),
     inflection = require('inflection'),
     fs = require('fs'),
+    file = require('./lib/files.js'),
     defaults = {
         'library': 'library/php' ,
         'postType': 'library/php/cpt',
