@@ -22,5 +22,10 @@ var WPStank = function() {
 
 };
 
+// create a file
+WPStank.prototype.init = function(  ) {
+    this.file.add( '.wpstank', JSON.stringify( this.defaults, null, 4 ) );
+};
+
 // Expose the stank
 exports = module.exports = WPStank;
