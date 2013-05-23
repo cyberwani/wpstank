@@ -29,10 +29,9 @@ var Files = function() {
 
     // Remove a file 
     this.rm = function( filePath ) {
-        fs.unlink( filePath, function(err){
-            if(err) throw err;
-            console.log( "Removed " + filePath );
-        });
+        try {
+            fs.unlinkSync( filePath );
+        } catch(e) {}
     };
 
     this.init();
