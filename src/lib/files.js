@@ -2,55 +2,47 @@
  * Files.js
  * Module for creating and managing files and directories
  */
-(function( root ){
 
-    var fs = require('fs'),
-        path = require('path'),
-        mkdirp = require('mkdirp'),
-        pubSub = require('node-pubsub');
+var fs = require('fs')
+    , path = require('path')
+    , mkdir = require('mkdirp') ;
 
-    var Files = function() {
+var Files = function() {
 
-        var self = this;
+    this.init = function() {
+        return {
+            add: this.add ,
+            rm: this.rm 
+        }
+    };
 
-        this.e = pubSub;
+    // Creates a directory
+    this.mkdir = function( filePath, callback ) {
+        mkdir( path.dirname( filePath ), function(err) {
+            if(err) throw err;
+            callback();
+        });
+    };
 
-        this.init = function() {
-            this.e.subscribe( 'files/exists', this.exists );
-            this.e.subscribe( 'files/mkdir', this.mkdir );
-            this.e.subscribe( 'files/write', this.write );
-            this.e.subscribe( 'files/exit', this.exit );
-            return {
-                add: this.add
-            }
-        };
+    // Writes content to a file
+    this.add = function( filePath, content ) {
+        this.mkdir( filePath, function(){
+            fs.writeFile( filePath, content, function(err){
+                if(err) throw err;
+                console.log( "Added " + filePath );
+            });
+        });
+    };
 
-        // Checks to see if path is a file
-        this.isFile = function( filePath ) {
-            stats = fs.lstatSync( filePath );
-            return stats.isFile();
-        };
-        // Checks to see if path is a dir
-        this.isDir = function( filePath ) {
-            stats = fs.lstatSync( filePath );
-            return stats.isDir();
-        };
+    // Remove a file 
+    this.rm = function( filePath ) {
+        fs.unlink( filePath, function(err){
+            if(err) throw err;
+            console.log( "Removed " + filePath );
+        });
+    };
 
-        // Creates a directory
-        this.mkdir = function( filePath ) {
-        };
+    this.init();
+}
 
-        this.add = function( filePath ) {
-            this.e.publish( 'files/mkdir', [ filePath ] );
-        };
-
-        this.explode = function( filePath ) {
-        };
-
-        this.init();
-    }
-
-    if( exports === "undefined" ) root.Files = Files;
-
-    module.exports = Files;
-})( this )
+exports = module.exports = Files;
