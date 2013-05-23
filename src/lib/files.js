@@ -23,12 +23,8 @@ var Files = function() {
 
     // Writes content to a file
     this.add = function( filePath, content ) {
-        this.mkdir( filePath, function(){
-            fs.writeFile( filePath, content, function(err){
-                if(err) throw err;
-                console.log( "Added " + filePath );
-            });
-        });
+        this.mkdir( filePath );
+        fs.writeFileSync( filePath, content);
     };
 
     // Remove a file 
