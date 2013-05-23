@@ -18,10 +18,7 @@ var Files = function() {
 
     // Creates a directory
     this.mkdir = function( filePath, callback ) {
-        mkdir( path.dirname( filePath ), function(err) {
-            if(err) throw err;
-            callback();
-        });
+        mkdir.sync( path.dirname( filePath ) );
     };
 
     // Writes content to a file
