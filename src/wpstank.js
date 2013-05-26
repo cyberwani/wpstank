@@ -25,6 +25,9 @@ var WPStank = function() {
 // create a file
 WPStank.prototype.init = function() {
     this.file.add( process.cwd() + '/.wpstankrc', JSON.stringify( this.defaults, null, 4 ) );
+    for( template in this.template ) {
+        this.file.add( process.cwd() + '/.wpstank/' + template, this.template[template] );
+    }
 };
 
 // Expose the stank
