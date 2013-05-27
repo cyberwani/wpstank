@@ -2,6 +2,7 @@
 var WPStank = require('../')
     , stank = new WPStank
     , fs = require('fs')
+    , path = require('path')
     , should = require('should');
 
 process.chdir( __dirname );
@@ -14,7 +15,6 @@ describe("Initializer", function(){
     });
 
     it("Is empty before a test", function(){
-        console.log( stank.defaults.rc )
         fs.existsSync( stank.defaults.rc ).should.eql( false );
     });
 
@@ -31,7 +31,7 @@ describe("Initializer", function(){
     it("Directory preference files are templates", function(){
         stank.init();
         for( template in stank.template ) {
-            file = fs.readFileSync( stank.defaults.dir + template, 'UTF-8' );
+            file = fs.readFileSync( path.join( stank.defaults.dir, stank.phpFile(template) ), 'UTF-8' );
             file.should.eql( stank.template[template] );
         }
     });
