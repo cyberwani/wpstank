@@ -34,6 +34,13 @@ var Files = function() {
         } catch(e) {}
     };
 
+    // read a file
+    this.read = function( filePath ) {
+        if( fs.existsSync( filePath ) ) 
+            return fs.readFileSync( filePath, "UTF-8" );
+        return "" ;
+    };
+
     this.init();
 }
 
