@@ -22,13 +22,17 @@ var WPStank = function() {
     this.file = new Files;
     this.template = new Templates;
 
+    this.phpFile = function( str ) {
+        return [ inflection.underscore( str ), '.php' ].join('').replace(/_/g, '-');
+    };
+
 };
 
 // create a file
 WPStank.prototype.init = function() {
     this.file.add( path.join( process.cwd() , this.defaults.rc ) , JSON.stringify( this.defaults, null, 4 ) );
     for( template in this.template ) {
-        this.file.add( path.join(process.cwd(), this.defaults.dir, template), this.template[template] );
+        this.file.add( path.join(process.cwd(), this.defaults.dir, this.phpFile( template ) ), this.template[template] );
     }
 };
 
