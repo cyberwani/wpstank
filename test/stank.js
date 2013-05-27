@@ -10,28 +10,28 @@ process.chdir( __dirname );
 describe("Initializer", function(){
     // remove any files
     before(function(){
-        stank.file.rm( stank.defaults.rc )
-        stank.file.rm( stank.defaults.dir )
+        stank.file.rm( stank.defaults().rc )
+        stank.file.rm( stank.defaults().dir )
     });
 
     it("Is empty before a test", function(){
-        fs.existsSync( stank.defaults.rc ).should.eql( false );
+        fs.existsSync( stank.defaults().rc ).should.eql( false );
     });
 
     it("Creates a preference file", function(){
         stank.init();
-        fs.existsSync( stank.defaults.rc ).should.eql( true );
+        fs.existsSync( stank.defaults().rc ).should.eql( true );
     });
 
     it("Creates a preference directory", function(){
         stank.init();
-        fs.existsSync( stank.defaults.rc ).should.eql( true );
+        fs.existsSync( stank.defaults().rc ).should.eql( true );
     });
 
     it("Directory preference files are templates", function(){
         stank.init();
         for( template in stank.template ) {
-            file = fs.readFileSync( path.join( stank.defaults.dir, stank.phpFile(template) ), 'UTF-8' );
+            file = fs.readFileSync( path.join( stank.defaults().dir, stank.phpFile(template) ), 'UTF-8' );
             file.should.eql( stank.template[template] );
         }
     });
@@ -56,7 +56,10 @@ describe("Templates", function(){
     });
     describe("Interactions", function(){
         it("Are read from the preferences dir", function(){
-            stank.get( 'postType' ).should.eql( fs.readFileSync( '.wpstank/postType', 'UTF-8' ) );
+            var types = [ 'postType', 'taxonomy' ];
+            for( i = 0; i < types.length; i++ ) {
+                stank.get( types[i] ).should.eql( fs.readFileSync( path.join( stank.defaults().dir, stank.phpFile( types[i] ) ), 'UTF-8' ) );
+            }
         });
     });
 });
