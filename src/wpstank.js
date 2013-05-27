@@ -13,6 +13,8 @@ var Templates = function() {
 var WPStank = function() {
 
     this.defaults = {
+        'rc' : '.wpstankrc' ,
+        'dir' : '.wpstank/' ,
         'postType': 'library/php/cpt/',
         'taxonomy': 'library/php/taxonomy/'
     };
@@ -24,9 +26,9 @@ var WPStank = function() {
 
 // create a file
 WPStank.prototype.init = function() {
-    this.file.add( process.cwd() + '/.wpstankrc', JSON.stringify( this.defaults, null, 4 ) );
+    this.file.add( path.join( process.cwd() , this.defaults.rc ) , JSON.stringify( this.defaults, null, 4 ) );
     for( template in this.template ) {
-        this.file.add( process.cwd() + '/.wpstank/' + template, this.template[template] );
+        this.file.add( path.join(process.cwd(), this.defaults.dir, template), this.template[template] );
     }
 };
 
