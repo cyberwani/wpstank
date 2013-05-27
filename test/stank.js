@@ -9,28 +9,29 @@ process.chdir( __dirname );
 describe("Initializer", function(){
     // remove any files
     before(function(){
-        stank.file.rm( '.wpstankrc' )
-        stank.file.rm( '.wpstank' )
+        stank.file.rm( stank.defaults.rc )
+        stank.file.rm( stank.defaults.dir )
     });
 
     it("Is empty before a test", function(){
-        fs.existsSync( '.wpstankrc' ).should.eql( false );
+        console.log( stank.defaults.rc )
+        fs.existsSync( stank.defaults.rc ).should.eql( false );
     });
 
     it("Creates a preference file", function(){
         stank.init();
-        fs.existsSync( '.wpstankrc' ).should.eql( true );
+        fs.existsSync( stank.defaults.rc ).should.eql( true );
     });
 
     it("Creates a preference directory", function(){
         stank.init();
-        fs.existsSync( '.wpstank' ).should.eql( true );
+        fs.existsSync( stank.defaults.rc ).should.eql( true );
     });
 
     it("Directory preference files are templates", function(){
         stank.init();
         for( template in stank.template ) {
-            file = fs.readFileSync( '.wpstank/' + template, 'UTF-8' );
+            file = fs.readFileSync( stank.defaults.dir + template, 'UTF-8' );
             file.should.eql( stank.template[template] );
         }
     });
