@@ -55,8 +55,9 @@ describe("Settings", function(){
         var settings = JSON.parse( fs.readFileSync( stank.settings().rc, 'UTF-8' ) )
             , dir = path.join( 'library', 'special-post-type-dir' ) ;
         settings.types.postType = dir ;
-        fs.writeFileSync( settings.rc, JSON.stringify( settings ), 'UTF-8' );
-        stank.settings().should.eql( settings )
+        fs.writeFileSync( settings.rc, JSON.stringify( settings, null, 4 ), 'UTF-8' );
+        newSettings = stank.file.read( settings.rc );
+        settings.should.eql( JSON.parse( newSettings ) );
     });
     /*
     it("Can change postType dir", function(){

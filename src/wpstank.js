@@ -28,7 +28,7 @@ var WPStank = function() {
     };
 
     this.updateSettings = function( settings ){
-        return this.settings = _.extend( {}, this.settings() , settings );
+        return this.file.add( this.settings().rc, JSON.stringify( _.extend( {}, this.settings() , settings ), null, 4 ) );
     };
 
     this.file = new Files;
