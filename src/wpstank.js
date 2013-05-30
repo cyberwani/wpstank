@@ -33,6 +33,10 @@ var WPStank = function() {
         return [ inflection.underscore( str ), '.php' ].join('').replace(/_/g, '-');
     };
 
+    this.filePath = function( name, type ) {
+        return path.join( this.defaults().types[type], this.phpFile( name ) );
+    };
+
 };
 
 // create a file
