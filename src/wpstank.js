@@ -73,5 +73,19 @@ WPStank.prototype.get = function( type ) {
     return fs.readFileSync( path.join( this.defaults().dir, this.phpFile( type ) ), 'UTF-8' );
 }
 
+// add a resource 
+WPStank.prototype.create = function( name, type ) {
+    var file = this.get( type )
+        .replace( new RegExp( '{{' + inflection.pluralize( type ) + '}}' ), this.name( name, 'plural' ) )
+        .replace( new RegExp( '{{' + inflection.singularize( type ) + '}}' ), this.name( name, 'singular' ) )
+        .replace( new RegExp( '{{' + inflection.singularize( type ) + '-slug}}' ), this.name( name, 'slug' ) );
+    this.file.add( this.filePath( name, type ), file );
+}
+
+// remove a resource 
+WPStank.prototype.destroy = function( name, type ) {
+    this.file.rm( path.join( this.defaults().types[ type ], this.phpFile( name ) ) );
+}
+
 // Expose the stank
 exports = module.exports = WPStank;
