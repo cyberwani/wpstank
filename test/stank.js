@@ -59,12 +59,13 @@ describe("Settings", function(){
         newSettings = stank.file.read( settings.rc );
         settings.should.eql( JSON.parse( newSettings ) );
     });
-    /*
+
     it("Can change postType dir", function(){
         stank.create( "job", "postType" );
         fs.existsSync( path.join( stank.settings().types.postType, 'job.php' ) ).should.eql( true );
+        var settings = stank.settings();
+        settings.dir = path.join( 'library', 'special-post-type-dir' ) ;
     });
-    */
 });
 describe("File System", function(){
     describe( "Create / Destroy", function(){
