@@ -8,38 +8,69 @@ var WPStank = require('../')
 process.chdir( __dirname );
 
 describe("Initializer", function(){
-    // remove any files
-    before(function(){
-        stank.file.rm( stank.defaults().rc )
-        stank.file.rm( stank.defaults().dir )
+    describe("Before init", function(){
+        it("Is empty before a test", function(){
+            fs.existsSync( stank.defaults().rc ).should.eql( false );
+        });
     });
 
-    it("Is empty before a test", function(){
-        fs.existsSync( stank.defaults().rc ).should.eql( false );
-    });
+    describe("After init", function(){
+        // remove any files
+        var clean = function() {
+            stank.file.rm( stank.defaults().rc )
+            stank.file.rm( stank.defaults().dir )
+        };
+        beforeEach(function(){
+            clean();
+            stank.init();
+        });
+        after( clean );
 
-    it("Creates a preference file", function(){
-        stank.init();
-        fs.existsSync( stank.defaults().rc ).should.eql( true );
-    });
+        it("Creates a preference file", function(){
+            fs.existsSync( stank.defaults().rc ).should.eql( true );
+        });
 
-    it("Creates a preference directory", function(){
-        stank.init();
-        fs.existsSync( stank.defaults().rc ).should.eql( true );
-    });
+        it("Creates a preference directory", function(){
+            fs.existsSync( stank.defaults().rc ).should.eql( true );
+        });
 
-    it("Directory preference files are templates", function(){
-        stank.init();
-        for( template in stank.template ) {
-            file = fs.readFileSync( path.join( stank.defaults().dir, stank.phpFile(template) ), 'UTF-8' );
-            file.should.eql( stank.template[template] );
-        }
+        it("Directory preference files are templates", function(){
+            for( template in stank.template ) {
+                file = fs.readFileSync( path.join( stank.defaults().dir, stank.phpFile(template) ), 'UTF-8' );
+                file.should.eql( stank.template[template] );
+            }
+        });
     });
 });
 
+describe("Settings", function(){
+    /*
+    it("Can modify settings", function(){
+        stank.init()
+        fs.readFile( stank.defaults().rc, function( err, data ){
+            var settings = JSON.parse( data );
+            settings.types.postType = path.join( 'library', 'special-post-type-dir' );
+            fs.writeFileSync( stank.defaults().rc, JSON.stringify( settings, null, 4), 'UTF-8' );
+            stank.create( "job", "postType" );
+            fs.existsSync( path.join( stank.defaults().types.postType, 'job.php' ) ).should.eql( true );
+        });
+        fs.existsSync( path.join( stank.defaults().types.postType, 'job.php' ) ).should.eql( true );
+    });
+    */
+});
 describe("File System", function(){
-    it("Can add a file", function(){
-        (1).should.equal(1);
+    describe( "Create / Destroy", function(){
+        beforeEach( function(){
+            stank.create( "job", "postType" );
+        });
+
+        it("can create a file", function(){
+            fs.existsSync( path.join( stank.defaults().types.postType, 'job.php' ) ).should.eql( true );
+        });
+        it("can destroy a file", function(){
+            stank.destroy( "job", "postType" );
+            fs.existsSync( path.join( stank.defaults().types.postType, 'job.php' ) ).should.eql( false );
+        });
     });
 });
 
