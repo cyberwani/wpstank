@@ -39,7 +39,7 @@ var WPStank = function() {
 
 };
 
-// create a file
+// init 
 WPStank.prototype.init = function() {
     this.file.add( path.join( process.cwd() , this.defaults().rc ) , JSON.stringify( this.defaults(), null, 4 ) );
     for( template in this.template ) {
@@ -47,6 +47,27 @@ WPStank.prototype.init = function() {
     }
 };
 
+// transform resource names
+WPStank.prototype.name = function( name, type ) {
+    var str = "";
+    switch( type ) {
+        case 'singular':
+            str = inflection.singularize( name );
+            str = inflection.capitalize( str );
+            break;
+        case 'plural':
+            str = inflection.pluralize( name );
+            str = inflection.capitalize( str );
+            break;
+        case 'slug':
+            str = name.toLowerCase().replace( /[ \-\s]/g, '_' );
+            break;
+        case 'dashed':
+            str = inflection.singular( name.toLowerCase().replace( /[ _\s]/g, '-' ) );
+            break;
+    }
+    return str ;
+}
 // fetch a resource
 WPStank.prototype.get = function( type ) {
     return fs.readFileSync( path.join( this.defaults().dir, this.phpFile( type ) ), 'UTF-8' );
