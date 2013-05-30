@@ -13,17 +13,22 @@ var Templates = function() {
 
 var WPStank = function() {
 
-    this.defaults = function(){
-        return _.extend( {}, this.file.read( '.wpstankrc' ) , 
-        {
-            'rc' : '.wpstankrc' ,
-            'dir' : '.wpstank/' ,
-            'types' : {
-                'postType': 'library/php/cpt/',
-                'shortcode': 'library/php/shortcode/',
-                'taxonomy': 'library/php/taxonomy/'
-            }
-        });
+    this.settings = function(){
+        return _.extend( {}, this.defaults, this.file.read( '.wpstankrc' ) || {} );
+    };
+
+    this.defaults = {
+        'rc' : '.wpstankrc' ,
+        'dir' : '.wpstank' ,
+        'types' : {
+            'postType': path.join( 'library', 'php', 'cpt' ) ,
+            'shortcode': path.join( 'library', 'php', 'shortcode' ) ,
+            'taxonomy': path.join( 'library', 'php', 'taxonomy' ) 
+        }
+    };
+
+    this.updateSettings = function( settings ){
+        return this.settings = _.extend( {}, this.settings() , settings );
     };
 
     this.file = new Files;
@@ -34,16 +39,16 @@ var WPStank = function() {
     };
 
     this.filePath = function( name, type ) {
-        return path.join( this.defaults().types[type], this.phpFile( name ) );
+        return path.join( this.settings().types[type], this.phpFile( name ) );
     };
 
 };
 
 // init 
 WPStank.prototype.init = function() {
-    this.file.add( path.join( process.cwd() , this.defaults().rc ) , JSON.stringify( this.defaults(), null, 4 ) );
+    this.file.add( path.join( process.cwd() , this.settings().rc ) , JSON.stringify( this.settings(), null, 4 ) );
     for( template in this.template ) {
-        this.file.add( path.join(process.cwd(), this.defaults().dir, this.phpFile( template ) ), this.template[template] );
+        this.file.add( path.join(process.cwd(), this.settings().dir, this.phpFile( template ) ), this.template[template] );
     }
 };
 
@@ -70,7 +75,7 @@ WPStank.prototype.name = function( name, type ) {
 }
 // fetch a resource
 WPStank.prototype.get = function( type ) {
-    return fs.readFileSync( path.join( this.defaults().dir, this.phpFile( type ) ), 'UTF-8' );
+    return fs.readFileSync( path.join( this.settings().dir, this.phpFile( type ) ), 'UTF-8' );
 }
 
 // add a resource 
@@ -84,7 +89,7 @@ WPStank.prototype.create = function( name, type ) {
 
 // remove a resource 
 WPStank.prototype.destroy = function( name, type ) {
-    this.file.rm( path.join( this.defaults().types[ type ], this.phpFile( name ) ) );
+    this.file.rm( path.join( this.settings().types[ type ], this.phpFile( name ) ) );
 }
 
 // Expose the stank
