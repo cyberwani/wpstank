@@ -20,6 +20,7 @@ var WPStank = function() {
             'dir' : '.wpstank/' ,
             'types' : {
                 'postType': 'library/php/cpt/',
+                'shortcode': 'library/php/shortcode/',
                 'taxonomy': 'library/php/taxonomy/'
             }
         });
