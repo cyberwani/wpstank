@@ -1,5 +1,6 @@
 
 var WPStank = require('../')
+    , inflection = require('inflection')
     , stank = new WPStank
     , fs = require('fs')
     , path = require('path')
@@ -52,12 +53,10 @@ describe("Settings", function(){
     beforeEach( cleanInit );
 
     it("Can modify settings", function(){
-        var settings = JSON.parse( fs.readFileSync( stank.settings().rc, 'UTF-8' ) )
-            , dir = path.join( 'library', 'special-post-type-dir' ) ;
-        settings.types.postType = dir ;
-        fs.writeFileSync( settings.rc, JSON.stringify( settings, null, 4 ), 'UTF-8' );
-        newSettings = stank.file.read( settings.rc );
-        settings.should.eql( JSON.parse( newSettings ) );
+        var settings = stank.settings() ;
+        settings.types.postType = path.join( 'library', 'special-post-type-dir' ) ;
+        stank.file.write( settings.rc, JSON.stringify( settings, null, 4 ) );
+        settings.should.eql( stank.settings() );
     });
 
     it("Can change postType dir", function(){
@@ -84,6 +83,18 @@ describe("File System", function(){
 });
 
 describe("Templates", function(){
+    beforeEach( cleanInit );
+
+    it("have correct handlebar markup", function(){
+        for( type in stank.settings().types ) {
+            var file = stank.get( type ) ,
+                left = file.match(/{{/g) ,
+                right = file.match(/}}/g) ;
+
+            left.length.should.eql( right.length );
+        }
+    });
+
     describe("Default settings", function(){
         it("includes a custom post type", function(){
             (typeof stank.template.postType).should.eql("string")
@@ -93,12 +104,40 @@ describe("Templates", function(){
             (typeof stank.template.taxonomy).should.eql("string")
             stank.template.taxonomy.should.not.have.lengthOf(0)
         });
+        it("includes a shortcode", function(){
+            (typeof stank.template.shortcode).should.eql("string")
+            stank.template.shortcode.should.not.have.lengthOf(0)
+        });
     });
     describe("Interactions", function(){
         it("Are read from the preferences dir", function(){
             var types = [ 'postType', 'taxonomy' ];
             for( i = 0; i < types.length; i++ ) {
                 stank.get( types[i] ).should.eql( fs.readFileSync( path.join( stank.settings().dir, stank.phpFile( types[i] ) ), 'UTF-8' ) );
+            }
+        });
+
+        it("returns the resource as a string before it replaces", function(){
+            ( typeof stank.get( 'postType' ) ).should.eql( "string" );
+        });
+    });
+});
+
+describe("Generator", function(){
+    before( cleanInit );
+
+    describe("Accuracy", function(){
+        it("correctly generates a post", function(){
+            var names = [ 'job', 'event', 'something else' ];
+            for( type in stank.settings().types ) {
+                for( var i = 0; i < names.length; i++ ) {
+                    name = names[i]
+                    stank.create( name, type );
+                    var file = stank.file.read( path.join( stank.settings().types[type], name + '.php' ) );
+                    (!!file.match( new RegExp( '{{' + type + '}}' ) )).should.eql( false );
+                    (!!file.match( new RegExp( '{{' + inflection.pluralize( type ) + '}}' ) )).should.eql( false );
+                    (!!file.match( new RegExp( '{{' + type + '-slug}}' ) )).should.eql( false );
+                }
             }
         });
     });
