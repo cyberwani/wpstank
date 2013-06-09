@@ -3,3 +3,4 @@ node_modules
 *.sw[o-p]
 .wpstank
 .wpstankrc
+test/library
