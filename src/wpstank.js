@@ -9,12 +9,15 @@ var inflection = require('inflection')
 var Templates = function() {
     this.postType = fs.readFileSync( path.join(__dirname, 'templates', 'post-type.php'), 'UTF-8' );
     this.taxonomy = fs.readFileSync( path.join(__dirname, 'templates', 'taxonomy.php'), 'UTF-8' );
+    this.shortcode = fs.readFileSync( path.join(__dirname, 'templates', 'shortcode.php'), 'UTF-8' );
 };
 
 var WPStank = function() {
 
     this.settings = function(){
-        return _.extend( {}, this.defaults, this.file.read( '.wpstankrc' ) || {} );
+        var rc = this.file.read( '.wpstankrc' );
+        rc = !!rc ? JSON.parse( rc ) : {} ;
+        return _.extend( {}, this.defaults, rc );
     };
 
     this.defaults = {
@@ -22,13 +25,13 @@ var WPStank = function() {
         'dir' : '.wpstank' ,
         'types' : {
             'postType': path.join( 'library', 'php', 'cpt' ) ,
-            'shortcode': path.join( 'library', 'php', 'shortcode' ) ,
-            'taxonomy': path.join( 'library', 'php', 'taxonomy' ) 
+            'taxonomy': path.join( 'library', 'php', 'taxonomy' ) ,
+            'shortcode': path.join( 'library', 'php', 'shortcode' ) 
         }
     };
 
     this.updateSettings = function( settings ){
-        return this.file.add( this.settings().rc, JSON.stringify( _.extend( {}, this.settings() , settings ), null, 4 ) );
+        return this.file.write( this.settings().rc, JSON.stringify( _.extend( {}, this.settings() , settings ), null, 4 ) );
     };
 
     this.file = new Files;
@@ -46,9 +49,9 @@ var WPStank = function() {
 
 // init 
 WPStank.prototype.init = function() {
-    this.file.add( path.join( process.cwd() , this.settings().rc ) , JSON.stringify( this.settings(), null, 4 ) );
+    this.file.write( path.join( process.cwd() , this.settings().rc ) , JSON.stringify( this.settings(), null, 4 ) );
     for( template in this.template ) {
-        this.file.add( path.join(process.cwd(), this.settings().dir, this.phpFile( template ) ), this.template[template] );
+        this.file.write( path.join(process.cwd(), this.settings().dir, this.phpFile( template ) ), this.template[template] );
     }
 };
 
@@ -75,16 +78,16 @@ WPStank.prototype.name = function( name, type ) {
 }
 // fetch a resource
 WPStank.prototype.get = function( type ) {
-    return fs.readFileSync( path.join( this.settings().dir, this.phpFile( type ) ), 'UTF-8' );
+    return this.file.read( path.join( this.settings().dir, this.phpFile( type ) ) );
 }
 
 // add a resource 
 WPStank.prototype.create = function( name, type ) {
     var file = this.get( type )
-        .replace( new RegExp( '{{' + inflection.pluralize( type ) + '}}' ), this.name( name, 'plural' ) )
-        .replace( new RegExp( '{{' + inflection.singularize( type ) + '}}' ), this.name( name, 'singular' ) )
-        .replace( new RegExp( '{{' + inflection.singularize( type ) + '-slug}}' ), this.name( name, 'slug' ) );
-    this.file.add( this.filePath( name, type ), file );
+        .replace( new RegExp( '{{' + inflection.pluralize( type ) + '}}', 'g' ), this.name( name, 'plural' ) )
+        .replace( new RegExp( '{{' + inflection.singularize( type ) + '}}', 'g' ), this.name( name, 'singular' ) )
+        .replace( new RegExp( '{{' + inflection.singularize( type ) + '-slug}}', 'g' ), this.name( name, 'slug' ) );
+    this.file.write( this.filePath( name, type ), file );
 }
 
 // remove a resource 

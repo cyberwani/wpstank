@@ -1,27 +1,36 @@
 #!/usr/bin/env node
 
-var program = require('commander'),
-    stank = require('./src/wpstank');
+var program = require('commander')
+    , WPStank = require('../src/wpstank')
+    , stank = new WPStank ;
 
 program
     .version('0.0.0')
     .option('-g, --generate', 'Generate a file')
-    .option('-d, --delete', 'Delete a file')
+    .option('-d, --destroy', 'Delete a file')
     .option('-p, --post-type [type]', 'Post Type')
-    .option('-t, --taxonomy', 'Taxonomy');
+    .option('-s, --shortcode [type]', 'Shortcode')
+    .option('-t, --taxonomy [type]', 'Taxonomy');
 
 program
     .command('init')
     .description('Setup stank')
     .action(function(){
+        console.log( "initializing..." );
+        stank.init();
     });
 
 program.parse( process.argv );
 
-if( program.generate ) {
-    if( program.postType ) {
-        // Is a post type specified?
-        if( program.postType === true )
-            return console.log( "No post type was specified" );
+// The main post types
+var types = [ 'postType', 'taxonomy', 'shortcode' ];
+
+for( i = 0; i < types.length; i++ ) {
+    var type = types[i];
+    if( program[type] ) {
+        // Is a type specified?
+        if( program[type] === true ) return console.log( "No " + type + " was specified" );
+        if( program.generate ) stank.create( program[type], type ); 
+        if( program.destroy ) stank.destroy( program[type], type ); 
     }
 }

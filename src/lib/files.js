@@ -22,7 +22,7 @@ var Files = function() {
     };
 
     // Writes content to a file
-    this.add = function( filePath, content ) {
+    this.write = function( filePath, content ) {
         this.mkdir( filePath );
         fs.writeFileSync( filePath, content);
     };

@@ -17,6 +17,9 @@
   "scripts": {
     "test": "mocha"
   },
+  "bin": {
+    "wpstank": "./bin/wpstank"
+  },
   "keywords": [
     "WordPress"
   ],
