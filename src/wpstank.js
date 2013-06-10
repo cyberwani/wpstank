@@ -20,7 +20,7 @@ var WPStank = function() {
         return _.extend( {}, this.defaults, rc );
     };
 
-    this.rc = '.wpstankrc' ,
+    this.rc = '.wpstank.json' ,
     this.dir = '.wpstank' ,
     this.defaults = {
         'types' : {
