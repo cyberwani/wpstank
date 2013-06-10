@@ -25,9 +25,11 @@ program
     .version('0.0.0')
     .option('-g, --generate', 'Generate a file')
     .option('-d, --destroy', 'Delete a file')
+    .option('-f, --force', 'Force to overwrite a file')
     .option('-p, --post-type [type]', 'Post Type')
     .option('-s, --shortcode [type]', 'Shortcode')
-    .option('-t, --taxonomy [type]', 'Taxonomy');
+    .option('-t, --taxonomy [type]', 'Taxonomy')
+    .option('-c, --custom <type,name>', 'Custom template', list);
 
 program
     .command('init')
@@ -45,9 +47,25 @@ var types = [ 'postType', 'taxonomy', 'shortcode' ];
 for( i = 0; i < types.length; i++ ) {
     var type = types[i];
     if( program[type] ) {
+        var resource = type ,
+            name = program[type] ;
         // Is a type specified?
-        if( program[type] === true ) return console.log( "No " + type + " was specified" );
-        if( program.generate ) stank.create( program[type], type ); 
-        if( program.destroy ) stank.destroy( program[type], type ); 
+        if( name === true ) return error( "No " + type + " was specified" );
+        if( program.generate ) {
+            // prompt before overwriting the file
+            if( stank.exist( name, type ) && ! program.force ) {
+                log('');
+                warning( stank.filePath( name, type ) + " already exists." );
+                log( 'Use the --force switch to overwrite the file' );
+                log('');
+            } else {
+                stank.create( name, type );
+            }
+        }
+        if( program.destroy ) stank.destroy( name, type ); 
     }
+}
+
+if( program.custom ) {
+    if( program.custom.length < 2 ) error( "Requires at least two comma separated arguments" );
 }
