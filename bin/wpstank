@@ -4,6 +4,23 @@ var program = require('commander')
     , WPStank = require('../src/wpstank')
     , stank = new WPStank ;
 
+// colors
+var red   = '\033[31m'
+    , yellow = '\033[33m'
+    , black  = '\030[0m'
+    , reset  = '\033[0m'
+    , b      = ' \r\n'
+    , space  = '    ';
+
+// helper functions 
+var list = function( val ) {
+    return val.split( ',' );
+}
+
+var error = function( msg ) { console.log( red + msg + reset ); }
+var warning = function( msg ) { console.log( yellow + msg + reset ); }
+var log = function( msg ) { console.log( b + space + msg + reset ); }
+
 program
     .version('0.0.0')
     .option('-g, --generate', 'Generate a file')
