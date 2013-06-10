@@ -95,5 +95,10 @@ WPStank.prototype.destroy = function( name, type ) {
     this.file.rm( path.join( this.settings().types[ type ], this.phpFile( name ) ) );
 }
 
+// Does the resource exist
+WPStank.prototype.exist = function( name, type ) {
+    return this.file.exist( path.join( this.settings().types[ type ], this.phpFile( name ) ) );
+}
+
 // Expose the stank
 exports = module.exports = WPStank;

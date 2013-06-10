@@ -41,6 +41,13 @@ var Files = function() {
         return "" ;
     };
 
+    // exists
+    this.exist = function( filePath ) {
+        if( fs.existsSync( filePath ) ) 
+            return true;
+        return false ;
+    };
+
     this.init();
 }
 

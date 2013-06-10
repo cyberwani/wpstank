@@ -11,6 +11,7 @@ var cleanInit = function() {
     clean();
     stank.init();
 }
+
 var clean = function() {
     stank.file.rm( stank.rc )
     stank.file.rm( stank.dir )
@@ -67,10 +68,10 @@ describe("Settings", function(){
     });
 });
 describe("File System", function(){
+    beforeEach( function(){
+        stank.create( "job", "postType" );
+    });
     describe( "Create / Destroy", function(){
-        beforeEach( function(){
-            stank.create( "job", "postType" );
-        });
 
         it("can create a file", function(){
             fs.existsSync( path.join( stank.settings().types.postType, 'job.php' ) ).should.eql( true );
@@ -78,6 +79,14 @@ describe("File System", function(){
         it("can destroy a file", function(){
             stank.destroy( "job", "postType" );
             fs.existsSync( path.join( stank.settings().types.postType, 'job.php' ) ).should.eql( false );
+        });
+    });
+    describe( "Exists", function(){
+        it("knows if a resource exists", function(){
+            stank.exist( "job", "postType" ).should.eql( true );
+        });
+        it("knows if a resource does not exists", function(){
+            stank.exist( "nonExistantFile", "postType" ).should.eql( false );
         });
     });
 });
