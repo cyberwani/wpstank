@@ -12,8 +12,8 @@ var cleanInit = function() {
     stank.init();
 }
 var clean = function() {
-    stank.file.rm( stank.settings().rc )
-    stank.file.rm( stank.settings().dir )
+    stank.file.rm( stank.rc )
+    stank.file.rm( stank.dir )
 };
 
 // change into the testing dir
@@ -23,7 +23,7 @@ process.chdir( __dirname );
 describe("Initializer", function(){
     describe("Before init", function(){
         it("Is empty before a test", function(){
-            fs.existsSync( stank.settings().rc ).should.eql( false );
+            fs.existsSync( stank.rc ).should.eql( false );
         });
     });
 
@@ -33,16 +33,16 @@ describe("Initializer", function(){
         after( clean );
 
         it("Creates a preference file", function(){
-            fs.existsSync( stank.settings().rc ).should.eql( true );
+            fs.existsSync( stank.rc ).should.eql( true );
         });
 
         it("Creates a preference directory", function(){
-            fs.existsSync( stank.settings().rc ).should.eql( true );
+            fs.existsSync( stank.rc ).should.eql( true );
         });
 
         it("Directory preference files are templates", function(){
             for( template in stank.template ) {
-                file = fs.readFileSync( path.join( stank.settings().dir, stank.phpFile(template) ), 'UTF-8' );
+                file = fs.readFileSync( path.join( stank.dir, stank.phpFile(template) ), 'UTF-8' );
                 file.should.eql( stank.template[template] );
             }
         });
@@ -55,7 +55,7 @@ describe("Settings", function(){
     it("Can modify settings", function(){
         var settings = stank.settings() ;
         settings.types.postType = path.join( 'library', 'special-post-type-dir' ) ;
-        stank.file.write( settings.rc, JSON.stringify( settings, null, 4 ) );
+        stank.file.write( stank.rc, JSON.stringify( settings, null, 4 ) );
         settings.should.eql( stank.settings() );
     });
 
@@ -113,7 +113,7 @@ describe("Templates", function(){
         it("Are read from the preferences dir", function(){
             var types = [ 'postType', 'taxonomy' ];
             for( i = 0; i < types.length; i++ ) {
-                stank.get( types[i] ).should.eql( fs.readFileSync( path.join( stank.settings().dir, stank.phpFile( types[i] ) ), 'UTF-8' ) );
+                stank.get( types[i] ).should.eql( fs.readFileSync( path.join( stank.dir, stank.phpFile( types[i] ) ), 'UTF-8' ) );
             }
         });
 

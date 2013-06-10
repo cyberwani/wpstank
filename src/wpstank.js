@@ -15,14 +15,14 @@ var Templates = function() {
 var WPStank = function() {
 
     this.settings = function(){
-        var rc = this.file.read( '.wpstankrc' );
+        var rc = this.file.read( this.rc );
         rc = !!rc ? JSON.parse( rc ) : {} ;
         return _.extend( {}, this.defaults, rc );
     };
 
+    this.rc = '.wpstankrc' ,
+    this.dir = '.wpstank' ,
     this.defaults = {
-        'rc' : '.wpstankrc' ,
-        'dir' : '.wpstank' ,
         'types' : {
             'postType': path.join( 'library', 'php', 'cpt' ) ,
             'taxonomy': path.join( 'library', 'php', 'taxonomy' ) ,
@@ -31,7 +31,7 @@ var WPStank = function() {
     };
 
     this.updateSettings = function( settings ){
-        return this.file.write( this.settings().rc, JSON.stringify( _.extend( {}, this.settings() , settings ), null, 4 ) );
+        return this.file.write( this.rc, JSON.stringify( _.extend( {}, this.settings() , settings ), null, 4 ) );
     };
 
     this.file = new Files;
@@ -49,9 +49,9 @@ var WPStank = function() {
 
 // init 
 WPStank.prototype.init = function() {
-    this.file.write( path.join( process.cwd() , this.settings().rc ) , JSON.stringify( this.settings(), null, 4 ) );
+    this.file.write( path.join( process.cwd() , this.rc ) , JSON.stringify( this.settings(), null, 4 ) );
     for( template in this.template ) {
-        this.file.write( path.join(process.cwd(), this.settings().dir, this.phpFile( template ) ), this.template[template] );
+        this.file.write( path.join(process.cwd(), this.dir, this.phpFile( template ) ), this.template[template] );
     }
 };
 
@@ -78,7 +78,7 @@ WPStank.prototype.name = function( name, type ) {
 }
 // fetch a resource
 WPStank.prototype.get = function( type ) {
-    return this.file.read( path.join( this.settings().dir, this.phpFile( type ) ) );
+    return this.file.read( path.join( this.dir, this.phpFile( type ) ) );
 }
 
 // add a resource 
