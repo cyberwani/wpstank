@@ -34,7 +34,6 @@ assert()					# If condition false,
 warning()
 {
 	echo -e "\x1b[33m$1\x1b[0m"
-
 }
 
 clean
@@ -45,10 +44,24 @@ warning "Initialize"
 assert "! -e .wpstank.json " "Settings file does not exists"
 assert "! -d .wpstank " "Template directory does not exist"
 
-wpstank init > /dev/null
+msg=$(wpstank init)
+init=$(echo $msg | grep -i initializing | wc -l)
+stamp1=$(stat -f "%Sm" .wpstank.json | md5)
 
 assert "-e .wpstank.json" "Settings file exists"
 assert "-d .wpstank " "Template directory exists"
+assert "$init -eq 1" "tells you that it is initializing"
+
+msg=$(wpstank init)
+force=$(echo $msg | grep -i force | wc -l)
+init=$(echo $msg | grep -i initializing | wc -l)
+assert "$force -eq 1" "stank will not init twice"
+assert "$force -eq 1" "stank prompts you to use --force to re init"
+
+sleep 1s
+count=$(wpstank init --force | grep -i force | wc -l)
+stamp2=$(stat -f "%Sm" .wpstank.json | md5)
+assert "$stamp1 != $stamp2" "stank overwrites the new file"
 
 warning "Resource generation"
 warning "  before"
