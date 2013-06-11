@@ -2,6 +2,7 @@
 
 var program = require('commander')
     , WPStank = require('../src/wpstank')
+    , path = require('path')
     , stank = new WPStank ;
 
 // colors
@@ -35,11 +36,16 @@ program
     .command('init')
     .description('Setup stank')
     .action(function(){
-        warning( "Initializing wpstank.." );
-        console.log( 'Adding files:' );
-        console.log( space + stank.rc );
-        console.log( space + stank.dir );
-        stank.init();
+        if( stank.file.exist( path.join( process.cwd(), stank.rc ) ) && ! program.force ) {
+            error( "wpstank is already initialized" )
+            warning( "use --force to reinitialize" )
+        } else {
+            warning( "Initializing wpstank.." );
+            console.log( 'Adding files:' );
+            console.log( space + stank.rc );
+            console.log( space + stank.dir );
+            stank.init();
+        }
     });
 
 program.parse( process.argv );

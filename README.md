@@ -150,5 +150,5 @@ Say you want to use `wpstank` to create page templates. The output directory for
 
 1. <del>Test to make sure settings are editable</del>
 1. Follow back to find `.wpstankrc` if we are in a child directory
-1. Don't allow `wpstank` to initialize more than once
+1. <del>Don't allow `wpstank` to initialize more than once</del>
 1. <del>Prompt before overwrite.</del>
