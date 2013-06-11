@@ -4,3 +4,4 @@ node_modules
 .wpstank
 .wpstank.json
 test/library
+*.log
