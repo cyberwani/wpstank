@@ -14,7 +14,7 @@ var red   = '\033[31m'
 
 // helper functions 
 var list = function( val ) {
-    return val.split( ',' );
+    return val.split( ':' );
 }
 
 var error = function( msg ) { console.log( red + msg + reset ); }
@@ -26,10 +26,10 @@ program
     .option('-g, --generate', 'Generate a file')
     .option('-d, --destroy', 'Delete a file')
     .option('-f, --force', 'Force to overwrite a file')
-    .option('-s, --shortcode [type]', 'Shortcode')
-    .option('-t, --taxonomy [type]', 'Taxonomy')
-    .option('-c, --custom <type,name>', 'Custom template', list);
     .option('-p, --posttype [name]', 'Post Type')
+    .option('-s, --shortcode [name]', 'Shortcode')
+    .option('-t, --taxonomy [name]', 'Taxonomy')
+    .option('-c, --custom <type:name>', 'Custom template', list);
 
 program
     .command('init')
@@ -44,14 +44,25 @@ program.parse( process.argv );
 // The main post types
 var types = [ 'posttype', 'taxonomy', 'shortcode' ];
 
+// Add the custom type, if it exists
+if( typeof program.custom != "undefined" ) {
+    types.push( 'custom' );
+}
+
 for( i = 0; i < types.length; i++ ) {
-    var type = types[i];
-    if( program[type] ) {
-        var resource = type ,
-            name = program[type] ;
+    var type = types[i],
+        name = program[type] ;
+
+    if( type == 'custom' ) {
+        type = program.custom[0];
+        name = program.custom[1];
+    }
+
+    if( name ) {
+
         // Is a type specified?
         if( name === true ) return error( "No " + type + " was specified" );
-        if( program.generate ) {
+        if( program.generate || program.custom ) {
             // prompt before overwriting the file
             if( stank.exist( name, type ) && ! program.force ) {
                 log('');
@@ -67,5 +78,5 @@ for( i = 0; i < types.length; i++ ) {
 }
 
 if( program.custom ) {
-    if( program.custom.length < 2 ) error( "Requires at least two comma separated arguments" );
+    if( program.custom.length < 2 ) error( "Requires at least two colon separated arguments" );
 }
