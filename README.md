@@ -143,8 +143,11 @@ Say you want to use `wpstank` to create page templates. The output directory for
       -t, --taxonomy [type]   Taxonomy
   
 
+## Contributing
 
-
+1. Fork it
+1. Create a feature branch
+1. Send a pull request
 
 ## Todos
 
