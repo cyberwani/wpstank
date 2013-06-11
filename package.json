@@ -1,6 +1,6 @@
 {
   "name": "wpstank",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Generate files for WordPress themes",
   "main": "index.js",
   "dependencies": {
