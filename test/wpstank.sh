@@ -39,6 +39,8 @@ warning()
 
 clean
 
+warning "Command Line Interface Testing"
+echo "==================================="
 warning "Initialize"
 assert "! -e .wpstank.json " "Settings file does not exists"
 assert "! -d .wpstank " "Template directory does not exist"
