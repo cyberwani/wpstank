@@ -58,38 +58,38 @@ describe("Stank files", function(){
 
         it("Can modify settings", function(){
             var settings = stank.settings() ;
-            settings.types.postType = path.join( 'library', 'special-post-type-dir' ) ;
+            settings.types.posttype = path.join( 'library', 'special-posttype-dir' ) ;
             stank.file.write( stank.rc, JSON.stringify( settings, null, 4 ) );
             settings.should.eql( stank.settings() );
         });
 
-        it("Can change postType dir", function(){
-            stank.create( "job", "postType" );
-            fs.existsSync( path.join( stank.settings().types.postType, 'job.php' ) ).should.eql( true );
+        it("Can change posttype dir", function(){
+            stank.create( "job", "posttype" );
+            fs.existsSync( path.join( stank.settings().types.posttype, 'job.php' ) ).should.eql( true );
             var settings = stank.settings();
-            settings.dir = path.join( 'library', 'special-post-type-dir' ) ;
+            settings.dir = path.join( 'library', 'special-posttype-dir' ) ;
         });
     });
     describe("File System", function(){
         beforeEach( function(){
-            stank.create( "job", "postType" );
+            stank.create( "job", "posttype" );
         });
         describe( "Create / Destroy", function(){
 
             it("can create a file", function(){
-                fs.existsSync( path.join( stank.settings().types.postType, 'job.php' ) ).should.eql( true );
+                fs.existsSync( path.join( stank.settings().types.posttype, 'job.php' ) ).should.eql( true );
             });
             it("can destroy a file", function(){
-                stank.destroy( "job", "postType" );
-                fs.existsSync( path.join( stank.settings().types.postType, 'job.php' ) ).should.eql( false );
+                stank.destroy( "job", "posttype" );
+                fs.existsSync( path.join( stank.settings().types.posttype, 'job.php' ) ).should.eql( false );
             });
         });
         describe( "Exists", function(){
             it("knows if a resource exists", function(){
-                stank.exist( "job", "postType" ).should.eql( true );
+                stank.exist( "job", "posttype" ).should.eql( true );
             });
             it("knows if a resource does not exists", function(){
-                stank.exist( "nonExistantFile", "postType" ).should.eql( false );
+                stank.exist( "nonExistantFile", "posttype" ).should.eql( false );
             });
         });
     });
@@ -109,8 +109,8 @@ describe("Stank files", function(){
 
         describe("Default settings", function(){
             it("includes a custom post type", function(){
-                (typeof stank.template.postType).should.eql("string")
-                stank.template.postType.should.not.have.lengthOf(0)
+                (typeof stank.template.posttype).should.eql("string")
+                stank.template.posttype.should.not.have.lengthOf(0)
             });
             it("includes a taxonomy", function(){
                 (typeof stank.template.taxonomy).should.eql("string")
@@ -123,14 +123,14 @@ describe("Stank files", function(){
         });
         describe("Interactions", function(){
             it("Are read from the preferences dir", function(){
-                var types = [ 'postType', 'taxonomy' ];
+                var types = [ 'posttype', 'taxonomy' ];
                 for( i = 0; i < types.length; i++ ) {
                     stank.get( types[i] ).should.eql( fs.readFileSync( path.join( stank.dir, stank.phpFile( types[i] ) ), 'UTF-8' ) );
                 }
             });
 
             it("returns the resource as a string before it replaces", function(){
-                ( typeof stank.get( 'postType' ) ).should.eql( "string" );
+                ( typeof stank.get( 'posttype' ) ).should.eql( "string" );
             });
         });
     });

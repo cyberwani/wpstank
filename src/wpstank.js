@@ -7,7 +7,7 @@ var inflection = require('inflection')
     , Files = require('./lib/files');
 
 var Templates = function() {
-    this.postType = fs.readFileSync( path.join(__dirname, 'templates', 'post-type.php'), 'UTF-8' );
+    this.posttype = fs.readFileSync( path.join(__dirname, 'templates', 'posttype.php'), 'UTF-8' );
     this.taxonomy = fs.readFileSync( path.join(__dirname, 'templates', 'taxonomy.php'), 'UTF-8' );
     this.shortcode = fs.readFileSync( path.join(__dirname, 'templates', 'shortcode.php'), 'UTF-8' );
 };
@@ -24,7 +24,7 @@ var WPStank = function() {
     this.dir = '.wpstank' ,
     this.defaults = {
         'types' : {
-            'postType': path.join( 'library', 'php', 'cpt' ) ,
+            'posttype': path.join( 'library', 'php', 'cpt' ) ,
             'taxonomy': path.join( 'library', 'php', 'taxonomy' ) ,
             'shortcode': path.join( 'library', 'php', 'shortcode' ) 
         }

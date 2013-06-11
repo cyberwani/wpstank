@@ -26,10 +26,10 @@ program
     .option('-g, --generate', 'Generate a file')
     .option('-d, --destroy', 'Delete a file')
     .option('-f, --force', 'Force to overwrite a file')
-    .option('-p, --post-type [type]', 'Post Type')
     .option('-s, --shortcode [type]', 'Shortcode')
     .option('-t, --taxonomy [type]', 'Taxonomy')
     .option('-c, --custom <type,name>', 'Custom template', list);
+    .option('-p, --posttype [name]', 'Post Type')
 
 program
     .command('init')
@@ -42,7 +42,7 @@ program
 program.parse( process.argv );
 
 // The main post types
-var types = [ 'postType', 'taxonomy', 'shortcode' ];
+var types = [ 'posttype', 'taxonomy', 'shortcode' ];
 
 for( i = 0; i < types.length; i++ ) {
     var type = types[i];

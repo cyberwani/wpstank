@@ -22,4 +22,4 @@ $args = array(
     'query_var'           => true,
 );
 
-register_taxonomy( '{{taxonomy-slug}}', array( '{{post-type}}' ), $args );
+register_taxonomy( '{{taxonomy-slug}}', array( '{{posttype}}' ), $args );
