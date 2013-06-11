@@ -35,7 +35,10 @@ program
     .command('init')
     .description('Setup stank')
     .action(function(){
-        console.log( "initializing..." );
+        warning( "Initializing wpstank.." );
+        console.log( 'Adding files:' );
+        console.log( space + stank.rc );
+        console.log( space + stank.dir );
         stank.init();
     });
 
