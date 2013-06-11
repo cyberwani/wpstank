@@ -93,6 +93,8 @@ for( i = 0; i < types.length; i++ ) {
                 log('');
             } else {
                 stank.create( name, type );
+                warning( 'Adding ' + type + ':');
+                console.log( space + stank.filePath( name, type ) );
             }
         }
         if( program.destroy ) stank.destroy( name, type ); 
