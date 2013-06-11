@@ -29,7 +29,7 @@ Several files are created once you run the `init` command inside your current wo
 
     .wpstank.json               # settings
     .wpstank/
-    .wpstank/posttype.php      # template file
+    .wpstank/posttype.php       # template file
     .wpstank/shortcode.php      # template file
     .wpstank/taxonomy.php       # template file
 
