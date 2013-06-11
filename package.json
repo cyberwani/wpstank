@@ -24,6 +24,9 @@
   "keywords": [
     "WordPress"
   ],
-  "author": "Luke Thomas",
+  "author": {
+    "name": "Luke Thomas",
+    "email": "luk3thomas@gmail.com"
+  },
   "license": "BSD"
 }
