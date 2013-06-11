@@ -60,6 +60,16 @@ WPStank.prototype.initialized = function() {
     return this.file.exist( path.join( process.cwd(), this.rc ) );
 }
 
+// Is the resource valid?
+WPStank.prototype.validType = function(type) {
+    return typeof this.settings().types[type] !== "undefined"
+}
+
+// Does the resource have a template file
+WPStank.prototype.validTemplate = function(name) {
+    return !this.file.exist( path.join( process.cwd(), this.dir, this.phpFile( name ) ) );
+}
+
 // transform resource names
 WPStank.prototype.name = function( name, type ) {
     var str = "";

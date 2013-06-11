@@ -66,6 +66,18 @@ for( i = 0; i < types.length; i++ ) {
     if( type == 'custom' ) {
         type = program.custom[0];
         name = program.custom[1];
+
+        if( stank.validTemplate( type ) ) {
+            error( "Error" );
+            warning( "No template file in " + stank.dir + '/' + type + '.php');
+            return false;
+        }
+
+        if( !stank.validType( type ) ) {
+            error( "Error" );
+            warning( "Define " + type + ' in ' + stank.rc );
+            return false;
+        }
     }
 
     if( name ) {
