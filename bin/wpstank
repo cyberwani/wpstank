@@ -1,0 +1,106 @@
+#!/usr/bin/env node
+
+var program = require('commander')
+    , WPStank = require('../src/wpstank')
+    , stank = new WPStank ;
+
+// colors
+var red   = '\033[31m'
+    , yellow = '\033[33m'
+    , black  = '\030[0m'
+    , reset  = '\033[0m'
+    , b      = ' \r\n'
+    , space  = '    ';
+
+// helper functions 
+var list = function( val ) {
+    return val.split( ':' );
+}
+
+var error = function( msg ) { console.log( red + msg + reset ); }
+var warning = function( msg ) { console.log( yellow + msg + reset ); }
+var log = function( msg ) { console.log( b + space + msg + reset ); }
+
+program
+    .version('0.0.0')
+    .option('-g, --generate', 'Generate a file')
+    .option('-d, --destroy', 'Delete a file')
+    .option('-f, --force', 'Force to overwrite a file')
+    .option('-p, --posttype [name]', 'Post Type')
+    .option('-s, --shortcode [name]', 'Shortcode')
+    .option('-t, --taxonomy [name]', 'Taxonomy')
+    .option('-c, --custom <type:name>', 'Custom template', list);
+
+program
+    .command('init')
+    .description('Setup stank')
+    .action(function(){
+        warning( "Initializing wpstank.." );
+        console.log( 'Adding files:' );
+        console.log( space + stank.rc );
+        console.log( space + stank.dir );
+        stank.init();
+    });
+
+program.parse( process.argv );
+
+// Tell them to init
+if( !stank.initialized() ) {
+    warning( "wpstank is not initialized" );
+    warning( "Run `wpstank init` to begin" );
+    return false;
+}
+
+// The main post types
+var types = [ 'posttype', 'taxonomy', 'shortcode' ];
+
+// Add the custom type, if it exists
+if( typeof program.custom != "undefined" ) {
+    types.push( 'custom' );
+}
+
+for( i = 0; i < types.length; i++ ) {
+    var type = types[i],
+        name = program[type] ;
+
+    if( type == 'custom' ) {
+        type = program.custom[0];
+        name = program.custom[1];
+
+        if( stank.validTemplate( type ) ) {
+            error( "Error" );
+            warning( "No template file in " + stank.dir + '/' + type + '.php');
+            return false;
+        }
+
+        if( !stank.validType( type ) ) {
+            error( "Error" );
+            warning( "Define " + type + ' in ' + stank.rc );
+            return false;
+        }
+    }
+
+    if( name ) {
+
+        // Is a type specified?
+        if( name === true ) return error( "No " + type + " was specified" );
+        if( program.generate || program.custom ) {
+            // prompt before overwriting the file
+            if( stank.exist( name, type ) && ! program.force ) {
+                log('');
+                warning( stank.filePath( name, type ) + " already exists." );
+                log( 'Use the --force switch to overwrite the file' );
+                log('');
+            } else {
+                stank.create( name, type );
+                warning( 'Adding ' + type + ':');
+                console.log( space + stank.filePath( name, type ) );
+            }
+        }
+        if( program.destroy ) stank.destroy( name, type ); 
+    }
+}
+
+if( program.custom ) {
+    if( program.custom.length < 2 ) error( "Requires at least two colon separated arguments" );
+}

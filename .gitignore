@@ -1,0 +1,6 @@
+node_modules
+.DS_Store
+*.sw[o-p]
+.wpstank
+.wpstank.json
+test/library
