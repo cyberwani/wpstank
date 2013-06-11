@@ -78,8 +78,17 @@ assert "$count -eq 1" "Shows action message that shortcode was added"
 
 # Custom
 warning "    custom resources"
-sed -i -r 's;(omy",);\1"page": "library/php/pages",;' .wpstank.json
+wpstank -gc page:staff > /dev/null
+count=$(wpstank -gc page:staff | grep -i "no template" | wc -l)
+assert "$count -eq 1" "Tells user to add template file"
+
+## add the template file
 echo "{{page}}" > .wpstank/page.php
+
+count=$(wpstank -gc page:staff | grep -i "define page" | wc -l)
+assert "$count -eq 1" "Tells user to define the resource in .wpstank.json"
+
+sed -i -r 's;(omy",);\1"page": "library/php/pages",;' .wpstank.json
 wpstank -gc page:staff > /dev/null
 assert " -e library/php/pages/staff.php" "Staff page exists"
 
