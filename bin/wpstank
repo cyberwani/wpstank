@@ -41,6 +41,13 @@ program
 
 program.parse( process.argv );
 
+// Tell them to init
+if( !stank.initialized() ) {
+    warning( "wpstank is not initialized" );
+    warning( "Run `wpstank init` to begin" );
+    return false;
+}
+
 // The main post types
 var types = [ 'posttype', 'taxonomy', 'shortcode' ];
 

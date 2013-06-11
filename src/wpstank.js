@@ -55,6 +55,11 @@ WPStank.prototype.init = function() {
     }
 };
 
+// Is it initialized
+WPStank.prototype.initialized = function() {
+    return this.file.exist( path.join( process.cwd(), this.rc ) );
+}
+
 // transform resource names
 WPStank.prototype.name = function( name, type ) {
     var str = "";
