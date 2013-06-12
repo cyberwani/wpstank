@@ -123,7 +123,7 @@ describe("Stank files", function(){
         });
         describe("Interactions", function(){
             it("Are read from the preferences dir", function(){
-                var types = [ 'posttype', 'taxonomy' ];
+                var types = [ 'posttype', 'taxonomy', 'shortcode' ];
                 for( i = 0; i < types.length; i++ ) {
                     stank.get( types[i] ).should.eql( fs.readFileSync( path.join( stank.dir, stank.phpFile( types[i] ) ), 'UTF-8' ) );
                 }
