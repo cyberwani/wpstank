@@ -138,7 +138,7 @@ Say you want to use `wpstank` to create page templates. The output directory for
       -V, --version           output the version number
       -g, --generate          Generate a file
       -d, --destroy           Delete a file
-      -p, --post-type [type]  Post Type
+      -p, --posttype [type]  Post Type
       -s, --shortcode [type]  Shortcode
       -t, --taxonomy [type]   Taxonomy
   
