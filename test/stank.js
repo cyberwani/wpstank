@@ -120,10 +120,14 @@ describe("Stank files", function(){
                 (typeof stank.template.shortcode).should.eql("string")
                 stank.template.shortcode.should.not.have.lengthOf(0)
             });
+            it("includes a widget", function(){
+                (typeof stank.template.widget).should.eql("string")
+                stank.template.widget.should.not.have.lengthOf(0)
+            });
         });
         describe("Interactions", function(){
             it("Are read from the preferences dir", function(){
-                var types = [ 'posttype', 'taxonomy', 'shortcode' ];
+                var types = [ 'posttype', 'taxonomy', 'shortcode', 'widget'];
                 for( i = 0; i < types.length; i++ ) {
                     stank.get( types[i] ).should.eql( fs.readFileSync( path.join( stank.dir, stank.phpFile( types[i] ) ), 'UTF-8' ) );
                 }
