@@ -29,6 +29,7 @@ program
     .option('-f, --force', 'Force to overwrite a file')
     .option('-p, --posttype [name]', 'Post Type')
     .option('-s, --shortcode [name]', 'Shortcode')
+    .option('-w, --widget [name]', 'Widget')
     .option('-t, --taxonomy [name]', 'Taxonomy')
     .option('-c, --custom <type:name>', 'Custom template', list);
 
@@ -58,7 +59,7 @@ if( !stank.initialized() ) {
 }
 
 // The main post types
-var types = [ 'posttype', 'taxonomy', 'shortcode' ];
+var types = [ 'posttype', 'taxonomy', 'shortcode', 'widget' ];
 
 // Add the custom type, if it exists
 if( typeof program.custom != "undefined" ) {

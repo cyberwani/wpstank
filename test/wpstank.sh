@@ -89,6 +89,11 @@ count=$(wpstank -gs event | grep -i adding | wc -l)
 assert "-e library/php/shortcode/event.php" "Event shortcode exists"
 assert "$count -eq 1" "Shows action message that shortcode was added"
 
+# Widget
+count=$(wpstank -gw event | grep -i adding | wc -l)
+assert "-e library/php/widget/event.php" "Event widget exists"
+assert "$count -eq 1" "Shows action message that widget was added"
+
 # Custom
 warning "    custom resources"
 wpstank -gc page:staff > /dev/null
