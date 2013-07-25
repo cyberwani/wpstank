@@ -1,10 +1,10 @@
 <?php
 
-add_action('widgets_init', create_function('', 'return register_widget("{{slug}}");'));
+add_action('widgets_init', create_function('', 'return register_widget("wp_widget_{{slug}}");'));
 
-class {{slug}} extends WP_Widget {
+class wp_widget_{{slug}} extends WP_Widget {
     /** constructor */
-    function {{slug}}() {
+    function wp_widget_{{slug}}() {
       parent::WP_Widget(false, $name = '{{singular}}', array( 'description' => ''));
     }
 
@@ -49,4 +49,4 @@ class {{slug}} extends WP_Widget {
     <?php
     }
 
-} // class {{slug}}
+} // class wp_widget_{{slug}}
