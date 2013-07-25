@@ -10,6 +10,7 @@ var Templates = function() {
     this.posttype = fs.readFileSync( path.join(__dirname, 'templates', 'posttype.php'), 'UTF-8' );
     this.taxonomy = fs.readFileSync( path.join(__dirname, 'templates', 'taxonomy.php'), 'UTF-8' );
     this.shortcode = fs.readFileSync( path.join(__dirname, 'templates', 'shortcode.php'), 'UTF-8' );
+    this.widget = fs.readFileSync( path.join(__dirname, 'templates', 'widget.php'), 'UTF-8' );
 };
 
 var WPStank = function() {
@@ -26,7 +27,8 @@ var WPStank = function() {
         'types' : {
             'posttype': path.join( 'library', 'php', 'cpt' ) ,
             'taxonomy': path.join( 'library', 'php', 'taxonomy' ) ,
-            'shortcode': path.join( 'library', 'php', 'shortcode' ) 
+            'shortcode': path.join( 'library', 'php', 'shortcode' ) ,
+            'widget': path.join( 'library', 'php', 'widget' ) 
         }
     };
 
