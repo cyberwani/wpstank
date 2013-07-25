@@ -129,24 +129,26 @@ Say you want to use `wpstank` to create page templates. The output directory for
 
 `wpstank` has several different options. Use the `wpstank --help` flag to see all the options.
 
-  
+
     Usage: wpstank [options] [command]
-  
+
     Commands:
-  
+
       init                   Setup stank
-  
+
     Options:
-  
-      -h, --help              output usage information
-      -V, --version           output the version number
-      -g, --generate          Generate a file
-      -d, --destroy           Delete a file
-      -p, --posttype [type]  Post Type
-      -s, --shortcode [type]  Shortcode
-      -w, --widget [type]  Widget
-      -t, --taxonomy [type]   Taxonomy
-  
+
+      -h, --help                output usage information
+      -V, --version             output the version number
+      -g, --generate            Generate a file
+      -d, --destroy             Delete a file
+      -f, --force               Force to overwrite a file
+      -p, --posttype [name]     Post Type
+      -s, --shortcode [name]    Shortcode
+      -w, --widget [name]       Widget
+      -t, --taxonomy [name]     Taxonomy
+      -c, --custom <type:name>  Custom template
+
 
 ## Contributing
 
