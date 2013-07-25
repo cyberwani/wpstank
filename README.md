@@ -32,6 +32,7 @@ Several files are created once you run the `init` command inside your current wo
     .wpstank/posttype.php       # template file
     .wpstank/shortcode.php      # template file
     .wpstank/taxonomy.php       # template file
+    .wpstank/widget.php         # template file
 
 ### Generate
 
@@ -66,7 +67,8 @@ Don't like the template files we use? Don't like the location `wpstank` generate
         "types": {
             "postType": "library/php/cpt",
             "taxonomy": "library/php/taxonomy",
-            "shortcode": "library/php/shortcode"
+            "shortcode": "library/php/shortcode",
+            "widget": "library/php/widget"
         }
     }
 
@@ -80,6 +82,7 @@ Templates are stored in the `.wpstank` directory.
     .wpstank/posttype.php       # template file
     .wpstank/shortcode.php      # template file
     .wpstank/taxonomy.php       # template file
+    .wpstank/widget.php         # template file
 
 Feel free to add, delete or update any code in the template files. Each template uses handle bar style variables for the resource names. If you look inside `.wpstank/posttype.php` you see the following variables:
 
@@ -105,6 +108,7 @@ Say you want to use `wpstank` to create page templates. The output directory for
                 "postType": "library/php/cpt",
                 "taxonomy": "library/php/taxonomy",
                 "shortcode": "library/php/shortcode",
+                "widget": "library/php/widget",
                 "page": "pages"
             }
         }
@@ -140,6 +144,7 @@ Say you want to use `wpstank` to create page templates. The output directory for
       -d, --destroy           Delete a file
       -p, --posttype [type]  Post Type
       -s, --shortcode [type]  Shortcode
+      -w, --widget [type]  Widget
       -t, --taxonomy [type]   Taxonomy
   
 
