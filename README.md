@@ -86,15 +86,15 @@ Templates are stored in the `.wpstank` directory.
 
 Feel free to add, delete or update any code in the template files. Each template uses handle bar style variables for the resource names. If you look inside `.wpstank/posttype.php` you see the following variables:
 
-    {{posttype}}        # singular
-    {{posttypes}}       # plural
-    {{posttype-slug}}   # singluar and lowercase
+    {{singular}}     # singular
+    {{plural}}       # plural
+    {{slug}}         # singluar and lowercase
 
 `wpstank` replaces the variable placeholders with the singular, plural, and slugified version of the `event` resource name. For example, if we created a new custom post type called **event** the template variables are transformed:
 
-    {{posttype}}        => Event
-    {{posttypes}}       => Events
-    {{posttype-slug}}   => event
+    {{singular}}     => Event
+    {{plural}}       => Events
+    {{slug}}         => event
 
 #### Adding a new template
 
@@ -116,9 +116,9 @@ Say you want to use `wpstank` to create page templates. The output directory for
 
 1. Add the `page` template to `.wpstank/page.php`. Utilize the placeholder variables, if you need them.
 
-        {{page}}
-        {{pages}}
-        {{page-slug}}
+        {{singular}}
+        {{plural}}
+        {{slug}}
 
 1. Generate the page with the `-c` flag
 

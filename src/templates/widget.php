@@ -1,11 +1,11 @@
 <?php
 
-add_action('widgets_init', create_function('', 'return register_widget("{{widget-slug}}");'));
+add_action('widgets_init', create_function('', 'return register_widget("{{slug}}");'));
 
-class {{widget-slug}} extends WP_Widget {
+class {{slug}} extends WP_Widget {
     /** constructor */
-    function {{widget-slug}}() {
-      parent::WP_Widget(false, $name = '{{Widget}}', array( 'description' => ''));
+    function {{slug}}() {
+      parent::WP_Widget(false, $name = '{{singular}}', array( 'description' => ''));
     }
 
     /** @see WP_Widget::widget */
@@ -49,4 +49,4 @@ class {{widget-slug}} extends WP_Widget {
     <?php
     }
 
-} // class {{widget-slug}}
+} // class {{slug}}

@@ -101,9 +101,9 @@ WPStank.prototype.get = function( type ) {
 // add a resource 
 WPStank.prototype.create = function( name, type ) {
     var file = this.get( type )
-        .replace( new RegExp( '{{' + inflection.pluralize( type ) + '}}', 'g' ), this.name( name, 'plural' ) )
-        .replace( new RegExp( '{{' + inflection.singularize( type ) + '}}', 'g' ), this.name( name, 'singular' ) )
-        .replace( new RegExp( '{{' + inflection.singularize( type ) + '-slug}}', 'g' ), this.name( name, 'slug' ) );
+        .replace( new RegExp( '{{plural}}', 'g' ), this.name( name, 'plural' ) )
+        .replace( new RegExp( '{{singular}}', 'g' ), this.name( name, 'singular' ) )
+        .replace( new RegExp( '{{slug}}', 'g' ), this.name( name, 'slug' ) );
     this.file.write( this.filePath( name, type ), file );
 }
 
