@@ -59,7 +59,16 @@ WPStank.prototype.init = function() {
 
 // Is it initialized
 WPStank.prototype.initialized = function() {
-    return this.file.exist( path.join( process.cwd(), this.rc ) );
+    var levels = process.cwd().split( path.sep ).length ;
+
+    for( i = 0; i < levels; i++ ) {
+        if( this.file.exist( path.join( process.cwd(), this.rc ) ) ) 
+            return true;
+        // move up one directory
+        process.chdir( path.join( process.cwd(), '..' ) ); 
+    }
+
+    return false
 }
 
 // Is the resource valid?

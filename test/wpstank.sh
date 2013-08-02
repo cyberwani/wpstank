@@ -63,6 +63,25 @@ count=$(wpstank init --force | grep -i force | wc -l)
 stamp2=$(stat -f "%Sm" .wpstank.json | md5)
 assert "$stamp1 != $stamp2" "stank overwrites the new file"
 
+# # # # # # # # # # # # # # # # # # # # # # 
+# Foo
+# # # # # # # # # # # # # # # # # # # # # # 
+
+reset
+warning "Find up"
+warning "  before"
+wpstank -gp testPost > /dev/null
+assert " -d library/php" "library/php directory exists"
+
+warning "  after"
+cd library/php
+
+lc=$(wpstank | wc -l)
+assert "$lc == 0" "wpstank chdir to parent directory"
+
+addPost=$(wpstank -gp random)
+assert " -f cpt/random.php" "created a posttype from within a subdir"
+
 warning "Resource generation"
 warning "  before"
 
