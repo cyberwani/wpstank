@@ -1,8 +1,17 @@
 #!/bin/bash
 
+BEGINNING_CWD=$(pwd)
+
 clean()
 {
 	rm -rf .wpstank* library
+}
+
+reset()
+{
+	clean
+	cd $BEGINNING_CWD
+	init > /dev/null
 }
 
 init()
@@ -40,6 +49,10 @@ clean
 
 warning "Command Line Interface Testing"
 echo "==================================="
+
+# # # # # # # # # # # # # # # # # # # # # # 
+# Init
+# # # # # # # # # # # # # # # # # # # # # # 
 warning "Initialize"
 assert "! -e .wpstank.json " "Settings file does not exists"
 assert "! -d .wpstank " "Template directory does not exist"
@@ -82,6 +95,11 @@ assert "$lc == 0" "wpstank chdir to parent directory"
 addPost=$(wpstank -gp random)
 assert " -f cpt/random.php" "created a posttype from within a subdir"
 
+# # # # # # # # # # # # # # # # # # # # # # 
+# Generate / Delete
+# # # # # # # # # # # # # # # # # # # # # # 
+
+reset
 warning "Resource generation"
 warning "  before"
 
@@ -128,6 +146,10 @@ assert "$count -eq 1" "Tells user to define the resource in .wpstank.json"
 sed -i -r 's;(omy",);\1"page": "library/php/pages",;' .wpstank.json
 wpstank -gc page:staff > /dev/null
 assert " -e library/php/pages/staff.php" "Staff page exists"
+
+# # # # # # # # # # # # # # # # # # # # # # 
+# Overwrites
+# # # # # # # # # # # # # # # # # # # # # # 
 
 warning "Overwrites"
 wpstank -gp job --force > /dev/null
