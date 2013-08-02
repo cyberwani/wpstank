@@ -1,17 +1,17 @@
 <?php 
 
 $labels = array(
-    'name'                => '{{taxonomies}}',
-    'singular_name'       => '{{taxonomy}}',
-    'search_items'        => 'Search {{taxonomies}}',
-    'all_items'           => 'All {{taxonomies}}',
-    'parent_item'         => 'Parent {{taxonomy}}',
-    'parent_item_colon'   => 'Parent {{taxonomy}}:',
-    'edit_item'           => 'Edit {{taxonomy}}', 
-    'update_item'         => 'Update {{taxonomy}}',
-    'add_new_item'        => 'Add New {{taxonomy}}',
-    'new_item_name'       => 'New {{taxonomy}} Name',
-    'menu_name'           => '{{taxonomy}}'
+    'name'                => '{{plural}}',
+    'singular_name'       => '{{singular}}',
+    'search_items'        => 'Search {{plural}}',
+    'all_items'           => 'All {{plural}}',
+    'parent_item'         => 'Parent {{singular}}',
+    'parent_item_colon'   => 'Parent {{singular}}:',
+    'edit_item'           => 'Edit {{singular}}', 
+    'update_item'         => 'Update {{singular}}',
+    'add_new_item'        => 'Add New {{singular}}',
+    'new_item_name'       => 'New {{singular}} Name',
+    'menu_name'           => '{{singular}}'
 ); 	
 
 $args = array(
@@ -22,4 +22,4 @@ $args = array(
     'query_var'           => true,
 );
 
-register_taxonomy( '{{taxonomy-slug}}', array( '{{posttype}}' ), $args );
+register_singular( '{{slug}}', array( '{{posttype}}' ), $args );

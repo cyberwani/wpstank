@@ -15,7 +15,11 @@ test-w:
 
 clean:
 	@echo "$(YC)Cleaning test files.$(RC)"
-	@rm -rvf test/library test/.wpstank*
+	@rm -rf test/library test/.wpstank*
 	@echo "$(NC)"
+
+testCli:
+	@make clean
+	@cd test && bash wpstank.sh
 
 .PHONY: test test-w

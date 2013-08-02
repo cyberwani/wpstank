@@ -1,8 +1,17 @@
 #!/bin/bash
 
+BEGINNING_CWD=$(pwd)
+
 clean()
 {
 	rm -rf .wpstank* library
+}
+
+reset()
+{
+	clean
+	cd $BEGINNING_CWD
+	init > /dev/null
 }
 
 init()
@@ -40,6 +49,10 @@ clean
 
 warning "Command Line Interface Testing"
 echo "==================================="
+
+# # # # # # # # # # # # # # # # # # # # # # 
+# Init
+# # # # # # # # # # # # # # # # # # # # # # 
 warning "Initialize"
 assert "! -e .wpstank.json " "Settings file does not exists"
 assert "! -d .wpstank " "Template directory does not exist"
@@ -63,6 +76,30 @@ count=$(wpstank init --force | grep -i force | wc -l)
 stamp2=$(stat -f "%Sm" .wpstank.json | md5)
 assert "$stamp1 != $stamp2" "stank overwrites the new file"
 
+# # # # # # # # # # # # # # # # # # # # # # 
+# Foo
+# # # # # # # # # # # # # # # # # # # # # # 
+
+reset
+warning "Find up"
+warning "  before"
+wpstank -gp testPost > /dev/null
+assert " -d library/php" "library/php directory exists"
+
+warning "  after"
+cd library/php
+
+lc=$(wpstank | wc -l)
+assert "$lc == 0" "wpstank chdir to parent directory"
+
+addPost=$(wpstank -gp random)
+assert " -f cpt/random.php" "created a posttype from within a subdir"
+
+# # # # # # # # # # # # # # # # # # # # # # 
+# Generate / Delete
+# # # # # # # # # # # # # # # # # # # # # # 
+
+reset
 warning "Resource generation"
 warning "  before"
 
@@ -89,6 +126,11 @@ count=$(wpstank -gs event | grep -i adding | wc -l)
 assert "-e library/php/shortcode/event.php" "Event shortcode exists"
 assert "$count -eq 1" "Shows action message that shortcode was added"
 
+# Widget
+count=$(wpstank -gw event | grep -i adding | wc -l)
+assert "-e library/php/widget/event.php" "Event widget exists"
+assert "$count -eq 1" "Shows action message that widget was added"
+
 # Custom
 warning "    custom resources"
 wpstank -gc page:staff > /dev/null
@@ -104,6 +146,10 @@ assert "$count -eq 1" "Tells user to define the resource in .wpstank.json"
 sed -i -r 's;(omy",);\1"page": "library/php/pages",;' .wpstank.json
 wpstank -gc page:staff > /dev/null
 assert " -e library/php/pages/staff.php" "Staff page exists"
+
+# # # # # # # # # # # # # # # # # # # # # # 
+# Overwrites
+# # # # # # # # # # # # # # # # # # # # # # 
 
 warning "Overwrites"
 wpstank -gp job --force > /dev/null

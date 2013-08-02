@@ -1,23 +1,23 @@
 <?php
 
-add_action( 'init', 'create_{{posttype-slug}}_post_type' );
+add_action( 'init', 'create_{{slug}}_post_type' );
 
-function create_{{posttype-slug}}_post_type() {
+function create_{{slug}}_post_type() {
 
-  register_post_type( '{{posttype-slug}}', array(
+  register_post_type( '{{slug}}', array(
       'labels' => array(
-        'name' => '{{posttypes}}',
-        'singular_name' => '{{posttype}}',
-        'add_new' => 'Add New', '{{posttype}}',
-        'add_new_item' => 'Add New {{posttype}}',
-        'edit_item' => 'Edit {{posttype}}',
-        'new_item' => 'New {{posttype}}',
-        'view_item' => 'View {{posttype}}',
-        'search_items' => 'Search {{posttypes}}',
-        'not_found' =>  'No {{posttypes}} found',
-        'not_found_in_trash' => 'No {{posttypes}} found in Trash', 
+        'name' => '{{plural}}',
+        'singular_name' => '{{singular}}',
+        'add_new' => 'Add New', '{{singular}}',
+        'add_new_item' => 'Add New {{singular}}',
+        'edit_item' => 'Edit {{singular}}',
+        'new_item' => 'New {{singular}}',
+        'view_item' => 'View {{singular}}',
+        'search_items' => 'Search {{plural}}',
+        'not_found' =>  'No {{plural}} found',
+        'not_found_in_trash' => 'No {{plural}} found in Trash', 
         'parent_item_colon' => '',
-        'menu_name' => '{{posttypes}}'
+        'menu_name' => '{{plural}}'
       ),
       'public' => true,
       'capability_type' => 'post',
@@ -33,9 +33,9 @@ function create_{{posttype-slug}}_post_type() {
  * Manage all the columns for each custom post type.
  */
  
-add_filter('manage_edit-{{posttype-slug}}_columns'  , 'add_new_{{posttype-slug}}_columns');
+add_filter('manage_edit-{{slug}}_columns'  , 'add_new_{{slug}}_columns');
 
-function add_new_{{posttype-slug}}_columns( $columns ) {
+function add_new_{{slug}}_columns( $columns ) {
   
   $offset = 2;
 

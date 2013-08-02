@@ -10,6 +10,7 @@ var Templates = function() {
     this.posttype = fs.readFileSync( path.join(__dirname, 'templates', 'posttype.php'), 'UTF-8' );
     this.taxonomy = fs.readFileSync( path.join(__dirname, 'templates', 'taxonomy.php'), 'UTF-8' );
     this.shortcode = fs.readFileSync( path.join(__dirname, 'templates', 'shortcode.php'), 'UTF-8' );
+    this.widget = fs.readFileSync( path.join(__dirname, 'templates', 'widget.php'), 'UTF-8' );
 };
 
 var WPStank = function() {
@@ -26,7 +27,8 @@ var WPStank = function() {
         'types' : {
             'posttype': path.join( 'library', 'php', 'cpt' ) ,
             'taxonomy': path.join( 'library', 'php', 'taxonomy' ) ,
-            'shortcode': path.join( 'library', 'php', 'shortcode' ) 
+            'shortcode': path.join( 'library', 'php', 'shortcode' ) ,
+            'widget': path.join( 'library', 'php', 'widget' ) 
         }
     };
 
@@ -57,7 +59,16 @@ WPStank.prototype.init = function() {
 
 // Is it initialized
 WPStank.prototype.initialized = function() {
-    return this.file.exist( path.join( process.cwd(), this.rc ) );
+    var levels = process.cwd().split( path.sep ).length ;
+
+    for( i = 0; i < levels; i++ ) {
+        if( this.file.exist( path.join( process.cwd(), this.rc ) ) ) 
+            return true;
+        // move up one directory
+        process.chdir( path.join( process.cwd(), '..' ) ); 
+    }
+
+    return false
 }
 
 // Is the resource valid?
@@ -99,9 +110,9 @@ WPStank.prototype.get = function( type ) {
 // add a resource 
 WPStank.prototype.create = function( name, type ) {
     var file = this.get( type )
-        .replace( new RegExp( '{{' + inflection.pluralize( type ) + '}}', 'g' ), this.name( name, 'plural' ) )
-        .replace( new RegExp( '{{' + inflection.singularize( type ) + '}}', 'g' ), this.name( name, 'singular' ) )
-        .replace( new RegExp( '{{' + inflection.singularize( type ) + '-slug}}', 'g' ), this.name( name, 'slug' ) );
+        .replace( new RegExp( '{{plural}}', 'g' ), this.name( name, 'plural' ) )
+        .replace( new RegExp( '{{singular}}', 'g' ), this.name( name, 'singular' ) )
+        .replace( new RegExp( '{{slug}}', 'g' ), this.name( name, 'slug' ) );
     this.file.write( this.filePath( name, type ), file );
 }
 
