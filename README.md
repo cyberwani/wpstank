@@ -1,10 +1,6 @@
-# WP Stank
+# wpstank
 
-A command line interface for any WordPress theme developer. WP Stank generates scaffolding for:
-
-1. custom post types
-1. taxonomies
-1. shortcodes
+`wpstank` is a command line tool for any WordPress theme developer. `wpstank` generates custom post types, taxonomies, widgets, and shortcodes based on templates that you specify.
 
 ## Installation
 
@@ -34,6 +30,41 @@ Several files are created once you run the `init` command inside your current wo
     .wpstank/taxonomy.php       # template file
     .wpstank/widget.php         # template file
 
+If you look inside `.wpstank/posttype.php` you see the template.
+
+```php
+    <?php
+
+    add_action( 'init', 'create_{{slug}}_post_type' );
+
+    function create_{{slug}}_post_type() {
+
+      register_post_type( '{{slug}}', array(
+          'labels' => array(
+            'name' => '{{plural}}',
+            'singular_name' => '{{singular}}',
+            'add_new' => 'Add New', '{{singular}}',
+            'add_new_item' => 'Add New {{singular}}',
+            'edit_item' => 'Edit {{singular}}',
+            'new_item' => 'New {{singular}}',
+            'view_item' => 'View {{singular}}',
+            'search_items' => 'Search {{plural}}',
+            'not_found' =>  'No {{plural}} found',
+            'not_found_in_trash' => 'No {{plural}} found in Trash',
+            'parent_item_colon' => '',
+            'menu_name' => '{{plural}}'
+          ),
+          'public' => true,
+          'capability_type' => 'post',
+          'show_in_menu' => true,
+          'hierarchical' => false,
+          'menu_position' => 100,
+          'supports' => array('title', 'editor', 'thumbnail', 'revisions')
+        )
+      );
+    }
+```
+
 ### Generate
 
 Begin by creating a new post type using **any** of the following commands:
@@ -42,9 +73,44 @@ Begin by creating a new post type using **any** of the following commands:
     wpstank -g -p event
     wpstank -gp event
 
-The file `event.php` is added to a newly created directory `library/php/cpt/`.
+The file `event.php` is added to a newly created directory `library/php/cpt/`. If you pop open the file we see that all the `{{singular}}`, `{{plural}}`, and `{{slug}}` variables are relaced with `Event`, `Events`, and `event`.
+
+```php
+    <?php
+
+    add_action( 'init', 'create_event_post_type' );
+
+    function create_event_post_type() {
+
+      register_post_type( 'event', array(
+          'labels' => array(
+            'name' => 'Events',
+            'singular_name' => 'Event',
+            'add_new' => 'Add New', 'Event',
+            'add_new_item' => 'Add New Event',
+            'edit_item' => 'Edit Event',
+            'new_item' => 'New Event',
+            'view_item' => 'View Event',
+            'search_items' => 'Search Events',
+            'not_found' =>  'No Events found',
+            'not_found_in_trash' => 'No Events found in Trash',
+            'parent_item_colon' => '',
+            'menu_name' => 'Events'
+          ),
+          'public' => true,
+          'capability_type' => 'post',
+          'show_in_menu' => true,
+          'hierarchical' => false,
+          'menu_position' => 100,
+          'supports' => array('title', 'editor', 'thumbnail', 'revisions')
+        )
+      );
+    }
+```
 
 ### Destroy
+
+Want to delete a file? Good! 
 
 Delete a post type using **any** of the following commands:
 
@@ -155,10 +221,3 @@ Say you want to use `wpstank` to create page templates. The output directory for
 1. Fork it
 1. Create a feature branch
 1. Send a pull request
-
-## Todos
-
-1. <del>Test to make sure settings are editable</del>
-1. Follow back to find `.wpstankrc` if we are in a child directory
-1. <del>Don't allow `wpstank` to initialize more than once</del>
-1. <del>Prompt before overwrite.</del>
