@@ -1,4 +1,4 @@
-# wpstank
+<img src="https://dl.dropboxusercontent.com/u/9219059/wpstank/wpstank.png" alt="wpstank" title="wpstank" />
 
 `wpstank` is a command line tool for any WordPress theme developer. `wpstank` generates custom post types, taxonomies, widgets, and shortcodes based on templates that you specify.
 
